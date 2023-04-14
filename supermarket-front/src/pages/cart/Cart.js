@@ -11,10 +11,11 @@ import {createOrder} from "../../controller/order";
 const CartContainer = styled.div`
   display: flex;
   flex-direction: column;
-  width: 100%;
+  width: 80%;
   border: 1px solid #ccc;
-  padding: 1rem;
-  margin-top: 20px;
+  padding: 20px;
+  margin: 20px;
+  box-sizing: border-box;
   
   & > h3 {
     border-bottom: 1px solid #ccc;
@@ -26,6 +27,7 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  width: 100%;
 `;
 
 const Form = styled.form`
@@ -34,6 +36,7 @@ const Form = styled.form`
   align-items: center;
   justify-content: center;
   margin-top: 20px;
+  width: 100%;
 `;
 
 const Label = styled.label`
@@ -50,6 +53,7 @@ const Input = styled.input`
 
 const DatePickerLabel = styled(Label)`
   margin-right: 5px;
+  width: 200px;
 `;
 
 const ErrorMessage = styled.p`
@@ -82,6 +86,11 @@ const Button = styled.button`
 
   max-height: 50px;
 `;
+
+const DateContainer = styled.div`
+  display: flex;
+  align-items: center;
+`
 
 export function Cart() {
   const [order, setOrder] = useState({})
@@ -152,7 +161,7 @@ export function Cart() {
             />
             {errors.name && <ErrorMessage>{errors.name.message}</ErrorMessage>}
           </div>
-          <div>
+          <DateContainer>
             <DatePickerLabel> Data de entrega: </DatePickerLabel>
             <DatePicker
               onChange={dateChange}
@@ -166,7 +175,7 @@ export function Cart() {
               id="deliveryDate"
             />
             {errors.deliveryDate && <ErrorMessage>{errors.deliveryDate.message}</ErrorMessage>}
-          </div>
+          </DateContainer>
 
           <CartContainer>
             <h3> Produtos selecionados: </h3>
