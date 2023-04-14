@@ -1,7 +1,6 @@
-import { Products } from "./pages/products/Products";
-import { RouterProvider} from 'react-router-dom'
-import { StoreProvider } from './store';
-import { routes } from "./routes";
+import {RouterProvider} from 'react-router-dom'
+import {StoreProvider} from './store';
+import {routes} from "./routes";
 
 function App() {
   return (
@@ -10,7 +9,7 @@ function App() {
         <RouterProvider router={routes} />
       </div>
     </StoreProvider>
-    
+
   );
 }
 

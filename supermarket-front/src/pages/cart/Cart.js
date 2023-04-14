@@ -1,7 +1,7 @@
 import {Header} from "../../components/header/Header";
 import {useForm} from "react-hook-form";
 import DatePicker from 'react-datepicker';
-import React, {useState, useContext, useEffect} from "react";
+import React, {useContext, useState} from "react";
 import {StoreContext} from '../../store';
 import {ProductCart} from "./ProductCard.js"
 import styled from 'styled-components'

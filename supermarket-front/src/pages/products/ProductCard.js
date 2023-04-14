@@ -113,14 +113,14 @@ export function ProductCard({product}) {
     let productExist = [];
     if (cart) {
       productExist = cart.filter(prod =>
-        prod.id == product.id
+        prod.id === product.id
       )
     }
 
     let newProduct;
 
     //Para não repetir produtos no carrinho
-    if (productExist.length != 0) {
+    if (productExist.length !== 0) {
       newProduct = cart.map(prod => {
 
         if (prod.id === product.id) {
