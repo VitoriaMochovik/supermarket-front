@@ -14,6 +14,12 @@ const CartContainer = styled.div`
   width: 100%;
   border: 1px solid #ccc;
   padding: 1rem;
+  margin-top: 20px;
+  
+  & > h3 {
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 15px;
+  }
 `
 const Container = styled.div`
   display: flex;
@@ -53,14 +59,28 @@ const ErrorMessage = styled.p`
 `;
 
 const Button = styled.button`
-  padding: 0.5rem;
-  border-radius: 0.25rem;
-  margin-top: 1rem;
-  background-color: #0077cc;
-  color: white;
-  font-size: 1rem;
-  border: none;
+  background-color: #49945e;
+  color: #fff;
+  border-radius: 5px;
+  padding: 10px 20px;
+  margin-top: 10px;
   cursor: pointer;
+  transition: all 0.3s ease;
+  border: 1px solid #49945e;
+
+  &:hover {
+    background-color: #1c6231;
+  }
+
+  &:disabled {
+    opacity: 50%;
+    background-color: #49945e;
+    color: #fff;
+    cursor: not-allowed;
+  }
+
+
+  max-height: 50px;
 `;
 
 export function Cart() {

@@ -54,6 +54,12 @@ const QuantityButton = styled.button`
     background-color: #333;
     color: #fff;
   }
+  
+  &:disabled {
+    opacity: 50%;
+    background-color: #fff;
+    color: #333;
+  }
 `;
 
 const QuantityDisplay = styled.p`
@@ -61,21 +67,28 @@ const QuantityDisplay = styled.p`
 `;
 
 const AddButton = styled.button`
-  background-color: #333;
+  background-color: #49945e;
   color: #fff;
   border-radius: 5px;
   padding: 10px 20px;
   margin-top: 10px;
   cursor: pointer;
   transition: all 0.3s ease;
-  border: 1px solid #333;
-  
+  border: 1px solid #49945e;
+
   &:hover {
-    background-color: #fff;
-    color: #333;
+    background-color: #1c6231;
   }
-  
-  flex: 1
+
+  &:disabled {
+    opacity: 50%;
+    background-color: #49945e;
+    color: #fff;
+    cursor: not-allowed;
+  }
+
+  flex: 1;
+  max-height: 50px;
 `;
 
 export function ProductCard({product}) {
@@ -135,15 +148,11 @@ export function ProductCard({product}) {
       <ProductTitle> {product.name} <span>({product.qtyStock} {product.qtyStock > 1 ? 'unidades disponíveis' : 'unidade disponível'})</span></ProductTitle>
       <ProductPrice> R$ {product.price} </ProductPrice>
       <ProductQuantity>
-        <QuantityButton onClick={handleRemoveQuantity}>-</QuantityButton>
+        <QuantityButton disabled={quantity === 0} onClick={handleRemoveQuantity}>-</QuantityButton>
         <QuantityDisplay>{quantity}</QuantityDisplay>
-        {quantity < product.qtyStock ?
-          (<QuantityButton onClick={handleAddQuantity}>+</QuantityButton>) :
-          <QuantityButton disabled>+</QuantityButton>}
+        <QuantityButton disabled={quantity === product.qtyStock} onClick={handleAddQuantity}>+</QuantityButton>
       </ProductQuantity>
-      {quantity !== 0 ?
-        (<AddButton onClick={handleAddToCart}>Adicionar ao carrinho</AddButton>) :
-        <AddButton disabled>Adicionar ao carrinho</AddButton>}
+      <AddButton disabled={quantity === 0} onClick={handleAddToCart}>Adicionar ao carrinho</AddButton>
     </Card>
   )
 }

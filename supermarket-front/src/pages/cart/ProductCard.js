@@ -33,7 +33,7 @@ const ProductTitle = styled.h3`
   flex: 5;
   
   & > span {
-    color: aqua;
+    color: #999999;
   }
 `;
 
@@ -58,8 +58,6 @@ const QuantityButton = styled.button`
   border: none;
   background-color: transparent;
   cursor: pointer;
-
-
 `;
 
 const QuantityDisplay = styled.p`
