@@ -67,6 +67,8 @@ const AddButton = styled.button`
   color: #333;
   border: 1px solid #333;
   }
+
+  
 `;
 
 export function ProductCard( {product}) {
@@ -141,7 +143,9 @@ export function ProductCard( {product}) {
                   ( <QuantityButton onClick={handleAddQuantity}>+</QuantityButton>) : 
                   <QuantityButton disabled >+</QuantityButton> }
             </ProductQuantity>
-            <AddButton onClick={handleAddToCart}>Adicionar ao carrinho</AddButton>
+            { quantity !== 0  ?
+              ( <AddButton onClick={handleAddToCart}>Adicionar ao carrinho</AddButton> ) :
+                <AddButton disabled>Adicionar ao carrinho</AddButton> }
         </Card>
     )
 }

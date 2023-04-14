@@ -19,4 +19,9 @@ export const routes =
       path: '/stock',
       element: <Stock />,
     },
+
+    {
+      path: '*',
+      element: <Products /> 
+    }
   ]);

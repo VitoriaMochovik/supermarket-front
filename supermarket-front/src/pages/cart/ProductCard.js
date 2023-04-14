@@ -105,7 +105,7 @@ const ErrorMessage = styled.p`
       };
     
       const handleRemoveQuantity = () => {
-        if (quantity > 0) {
+        if (quantity - 1 > 0) {
           
 
           const newProduct = cart.map(prod => {
