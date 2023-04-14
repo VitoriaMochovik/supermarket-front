@@ -1,8 +1,8 @@
-import React, { useState, useContext } from 'react';
+import React, {useState, useContext} from 'react';
 import styled from 'styled-components'
-import { StoreContext } from '../../store';
+import {StoreContext} from '../../store';
 
-export const Card  = styled.div`
+export const Card = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -43,8 +43,8 @@ const QuantityButton = styled.button`
   transition: all 0.3s ease;
 
   &:hover {
-  background-color: #333;
-  color: #fff;
+    background-color: #333;
+    color: #fff;
   }
 `;
 
@@ -63,89 +63,78 @@ const AddButton = styled.button`
   transition: all 0.3s ease;
 
   &:hover {
-  background-color: #fff;
-  color: #333;
-  border: 1px solid #333;
+    background-color: #fff;
+    color: #333;
+    border: 1px solid #333;
   }
-
-  
 `;
 
-export function ProductCard( {product}) {
+export function ProductCard({product}) {
+  const [quantity, setQuantity] = useState(0);
+  const {cart, setCart} = useContext(StoreContext);
 
-    const [quantity, setQuantity] = useState(0);
-    const { cart, setCart } = useContext(StoreContext);
+  const handleAddQuantity = () => {
+    setQuantity(quantity + 1);
 
-    const handleAddQuantity = () => {
-      setQuantity(quantity + 1);
 
-      
-    };
-  
-    const handleRemoveQuantity = () => {
-      if (quantity > 0) {
-        setQuantity(quantity - 1);
-      }
-    };
-  
-    const handleAddToCart = () => {
+  };
 
-      let productExist = [];
-      if(cart) {
-        productExist = cart.filter(prod => 
-          prod.id == product.id 
-          
-        )
-      }
-      
-      
-      let newProduct;
+  const handleRemoveQuantity = () => {
+    if (quantity > 0) {
+      setQuantity(quantity - 1);
+    }
+  };
 
-      //Para não repetir produtos no carrinho 
-      if(productExist.length != 0) {
-        newProduct = cart.map(prod => {
+  const handleAddToCart = () => {
 
-          if(prod.id === product.id) {
-            return {...prod, qty: quantity + prod.qty}
-          }
-          return prod
-        })
+    let productExist = [];
+    if (cart) {
+      productExist = cart.filter(prod =>
+        prod.id == product.id
+      )
+    }
 
-        setCart(newProduct)
-      } else {
-        newProduct = {
-          id: product.id,
-          name: product.name,
-          price: product.price,
-          qtyStock: product.qtyStock,
-          qty: quantity
+    let newProduct;
+
+    //Para não repetir produtos no carrinho
+    if (productExist.length != 0) {
+      newProduct = cart.map(prod => {
+
+        if (prod.id === product.id) {
+          return {...prod, qty: quantity + prod.qty}
         }
+        return prod
+      })
 
-        setCart([...cart, newProduct]);
-        
-        console.log("product", product)
-        console.log("cart", cart)
+      setCart(newProduct)
+    } else {
+      newProduct = {
+        id: product.id,
+        name: product.name,
+        price: product.price,
+        qtyStock: product.qtyStock,
+        qty: quantity
       }
-      
-      
 
-      alert(`Adicionado ao carrinho: ${product.name} - Quantidade: ${quantity}`);
-    };
+      setCart([...cart, newProduct]);
+    }
+    alert(`Adicionado ao carrinho: ${product.name} - Quantidade: ${quantity}`);
+  };
 
-    return(
-        <Card> 
-            <ProductTitle> {product.name}</ProductTitle>
-            <ProductPrice> R$ {product.price} </ProductPrice>
-            <ProductQuantity>
-                <QuantityButton onClick={handleRemoveQuantity}>-</QuantityButton>
-                <QuantityDisplay>{quantity}</QuantityDisplay>
-                { quantity < product.qtyStock ?
-                  ( <QuantityButton onClick={handleAddQuantity}>+</QuantityButton>) : 
-                  <QuantityButton disabled >+</QuantityButton> }
-            </ProductQuantity>
-            { quantity !== 0  ?
-              ( <AddButton onClick={handleAddToCart}>Adicionar ao carrinho</AddButton> ) :
-                <AddButton disabled>Adicionar ao carrinho</AddButton> }
-        </Card>
-    )
+  return (
+    <Card>
+      <ProductTitle> {product.name}</ProductTitle>
+      <ProductPrice> R$ {product.price} </ProductPrice>
+      <ProductQuantity>
+        <QuantityButton onClick={handleRemoveQuantity}>-</QuantityButton>
+        <QuantityDisplay>{quantity}</QuantityDisplay>
+        {quantity < product.qtyStock ?
+          (<QuantityButton onClick={handleAddQuantity}>+</QuantityButton>) :
+          <QuantityButton disabled>+</QuantityButton>}
+      </ProductQuantity>
+      {quantity !== 0 ?
+        (<AddButton onClick={handleAddToCart}>Adicionar ao carrinho</AddButton>) :
+        <AddButton disabled>Adicionar ao carrinho</AddButton>}
+    </Card>
+  )
 }

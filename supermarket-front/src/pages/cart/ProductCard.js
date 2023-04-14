@@ -1,7 +1,6 @@
-import { StoreContext } from '../../store';
-import React, { useState, useContext } from 'react';
+import {StoreContext} from '../../store';
+import React, {useState, useContext} from 'react';
 import styled from 'styled-components'
-
 
 export const ProductContainer = styled.div`
   display: flex;
@@ -16,35 +15,35 @@ export const ProductContainer = styled.div`
   }
 `;
 
-export const Card  = styled.div`
-display: flex;
-flex-direction: column;
-align-items: center;
-width: 200px;
-height: 250px;
-border: 1px solid #ccc;
-border-radius: 10px;
-padding: 20px;
-box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+export const Card = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 200px;
+  height: 250px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
 `
 
 const ProductTitle = styled.h3`
-font-size: 1.2rem;
+  font-size: 1.2rem;
   font-weight: bold;
 `;
 
 const ProductPrice = styled.p`
-font-size: 1.2rem;
+  font-size: 1.2rem;
   font-weight: bold;
 `;
 
 const ProductQuantity = styled.div`
-display: flex;
+  display: flex;
   align-items: center;
 `;
 
 const QuantityButton = styled.button`
-font-size: 1rem;
+  font-size: 1rem;
   font-weight: bold;
   border: none;
   background-color: transparent;
@@ -53,12 +52,8 @@ font-size: 1rem;
 
 `;
 
-//   &:disabled {
-//     opacity: 0.5;
-//     cursor: not-allowed;
-//   }
 const QuantityDisplay = styled.p`
-margin: 0 0.5rem;
+  margin: 0 0.5rem;
 `;
 
 export const RemoveButton = styled.button`
@@ -82,72 +77,63 @@ const ErrorMessage = styled.p`
   align-items: center;
 `;
 
- 
- export function ProductCart( {product} ) {
-    const { cart, setCart } = useContext(StoreContext);
-    const [quantity, setQuantity] = useState(product.qty)
 
-    const handleAddQuantity = () => {
-        
+export function ProductCart({product}) {
+  const {cart, setCart} = useContext(StoreContext);
+  const [quantity, setQuantity] = useState(product.qty)
 
-        const newProduct = cart.map(prod => {
+  const handleAddQuantity = () => {
+    const newProduct = cart.map(prod => {
 
-            if(prod.id === product.id) {
-              return {...prod, qty: quantity + 1 }
-            }
-            return prod
-        })
-        setQuantity(quantity + 1);
-  
-        setCart(newProduct)
-  
-        
-      };
-    
-      const handleRemoveQuantity = () => {
-        if (quantity - 1 > 0) {
-          
+      if (prod.id === product.id) {
+        return {...prod, qty: quantity + 1}
+      }
+      return prod
+    })
+    setQuantity(quantity + 1);
 
-          const newProduct = cart.map(prod => {
+    setCart(newProduct)
+  };
 
-            if(prod.id === product.id) {
-              return {...prod, qty: quantity - 1}
-            }
-            return prod
-          })
+  const handleRemoveQuantity = () => {
+    if (quantity - 1 > 0) {
+      const newProduct = cart.map(prod => {
 
-          setQuantity(quantity - 1);
-  
-            setCart(newProduct)
-        } else {
-            const updateCart = cart.filter(prod => prod.id !== product.id)
-
-            setCart(updateCart)
+        if (prod.id === product.id) {
+          return {...prod, qty: quantity - 1}
         }
+        return prod
+      })
+
+      setQuantity(quantity - 1);
+
+      setCart(newProduct)
+    } else {
+      const updateCart = cart.filter(prod => prod.id !== product.id)
+      setCart(updateCart)
+    }
 
 
-      };
+  };
 
-      const handleRemoveItem = (id) => {
-        setCart(cart.filter((prod) => prod.id !== id));
-      };
+  const handleRemoveItem = (id) => {
+    setCart(cart.filter((prod) => prod.id !== id));
+  };
 
-      
-    
-    return (
-        <ProductContainer> 
-            <ProductTitle> {product.name}</ProductTitle>
-            <ProductPrice> R$ {product.price} </ProductPrice>
-            <ProductQuantity>
-                <QuantityButton type={'button'} onClick={handleRemoveQuantity}>-</QuantityButton>
-                <QuantityDisplay>{quantity}</QuantityDisplay>
-                { quantity < product.qtyStock ?
-                    ( <QuantityButton type={'button'}onClick={handleAddQuantity}>+</QuantityButton> ): 
-                
-                    <div><ErrorMessage> A quantidade máxima disponivel em estoque foi atingida</ErrorMessage> </div>}
-            </ProductQuantity>
-            <RemoveButton type={'button'} onClick={() => handleRemoveItem(product.id)}> Remover</RemoveButton>
-        
-        </ProductContainer>
-    )
- }
+
+  return (
+    <ProductContainer>
+      <ProductTitle> {product.name}</ProductTitle>
+      <ProductPrice> R$ {product.price} </ProductPrice>
+      <ProductQuantity>
+        <QuantityButton type={'button'} onClick={handleRemoveQuantity}>-</QuantityButton>
+        <QuantityDisplay>{quantity}</QuantityDisplay>
+        {quantity < product.qtyStock ?
+          (<QuantityButton type={'button'} onClick={handleAddQuantity}>+</QuantityButton>) :
+          <div><ErrorMessage> A quantidade máxima disponivel em estoque foi atingida</ErrorMessage></div>}
+      </ProductQuantity>
+      <RemoveButton type={'button'} onClick={() => handleRemoveItem(product.id)}> Remover</RemoveButton>
+
+    </ProductContainer>
+  )
+}

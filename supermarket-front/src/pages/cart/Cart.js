@@ -1,24 +1,20 @@
-import { Header } from "../../components/header/Header";
-import {useForm}  from "react-hook-form";
+import {Header} from "../../components/header/Header";
+import {useForm} from "react-hook-form";
 import DatePicker from 'react-datepicker';
 import React, {useState, useContext, useEffect} from "react";
-import { StoreContext } from '../../store';
-import { ProductCart } from "./ProductCard.js"
+import {StoreContext} from '../../store';
+import {ProductCart} from "./ProductCard.js"
 import styled from 'styled-components'
-
-
 import 'react-datepicker/dist/react-datepicker.css'
-import { createOrder } from "../../controller/order";
+import {createOrder} from "../../controller/order";
 
 const CartContainer = styled.div`
-    display: flex;
+  display: flex;
   flex-direction: column;
   width: 100%;
   max-width: 400px;
   border: 1px solid #ccc;
   padding: 1rem;
-
-
 `
 const Container = styled.div`
   display: flex;
@@ -57,7 +53,6 @@ const ErrorMessage = styled.p`
   color: red;
 `;
 
-
 const Button = styled.button`
   padding: 0.5rem;
   border-radius: 0.25rem;
@@ -69,129 +64,106 @@ const Button = styled.button`
   cursor: pointer;
 `;
 
-
-
 export function Cart() {
+  const [order, setOrder] = useState({})
+  const [deliveryDate, setdeliveryDate] = useState(new Date())
+  const {cart, setCart} = useContext(StoreContext);
+  const {register, handleSubmit, reset, formState: {errors}} = useForm()
+  const [loading, setLoading] = useState(false)
 
-    const [order, setOrder ] = useState({})
-    const [deliveryDate, setdeliveryDate] = useState(new Date() )
-    const { cart, setCart } = useContext(StoreContext);
-    const { register, handleSubmit, reset, formState: { errors } } = useForm()
-    const [loading, setLoading ] = useState(false)
+  const dateChange = (deliveryDate) => {
+    setdeliveryDate(deliveryDate)
+  }
 
+  const onSubmit = async (data) => {
+    setLoading(true)
 
+    const arrayProducts = cart.map((product) => {
+      return (
+        {
+          "id": product.id,
+          "qty": product.qty
+        }
+      )
+    })
 
-    
+    const newOrder = {
+      "name": data.name,
+      "dtDelivery": data.deliveryDate,
+      "products": arrayProducts
 
-    // const { form, onChange, cleanFields } = useForm({
-    //     name: "",
-    //     date: new Date()
-    //   });
-
-    const dateChange = (deliveryDate) => {
-        setdeliveryDate(deliveryDate)
     }
 
+    setOrder(newOrder)
 
-    const onSubmit = async (data) => {
-      setLoading(true)
-        console.log(data)
+    try {
+      await createOrder(newOrder)
 
-        const arrayProducts = cart.map((product) => {
-            return (
-                {"id": product.id,
-                "qty": product.qty}
-            )
-        })
+      setCart([])
+      reset()
 
-        console.log("araray de products", arrayProducts)
+      alert("Pedido enviado!!!")
+    } catch (error) {
+      console.log(error)
+    }
 
-        const newOrder = {
-            "name": data.name,
-            "dtDelivery": data.deliveryDate,
-            "products": arrayProducts
-            
-        }
+    setLoading(false)
+  }
 
-        setOrder(newOrder)
+  const totalPrice = cart.reduce((acc, item) => {
+    return acc + item.price * item.qty;
+  }, 0);
 
+  return (
+    <div>
+      <Header/>
+      <Container>
+        <Form onSubmit={handleSubmit(onSubmit)}>
+          <div>
+            <Label>Nome:</Label>
+            <Input
+              id={"name"}
+              type="text"
+              //value={form.name}
+              {...register("name")}
+              placeholder="Nome"
+              required
+              pattern={"^.{3,}"}
+              title={"O nome deve ter no mínimo 3 letras"}
+            />
+            {errors.name && <ErrorMessage>{errors.name.message}</ErrorMessage>}
+          </div>
+          <div>
+            <DatePickerLabel> Data de entrega: </DatePickerLabel>
+            <DatePicker
+              onChange={dateChange}
+              selected={deliveryDate}
+            />
+            <input
+              {...register("deliveryDate",
+                {required: true})}
+              type="hidden"
+              value={deliveryDate.toISOString()}
+              id="deliveryDate"
+            />
+            {errors.deliveryDate && <ErrorMessage>{errors.deliveryDate.message}</ErrorMessage>}
+          </div>
 
-        try {
-          await createOrder(newOrder)
-         
-          setCart([])
-          reset()
+          <CartContainer>
+            <h3> Pordutos selecionados: </h3>
+            {cart.map((product) => (
+              <ProductCart
+                key={product.id}
+                product={product}
+              />
+            ))}
 
-          console.log("new order", newOrder)
-          alert("Pedido enviado!!!")
-        } catch(error) {
-          console.log(error)
-        }
-        
-        setLoading(false)
-    }   
+          </CartContainer>
+          <h2>Total: R$ {totalPrice.toFixed(2)}</h2>
+          <Button type="submit" disabled={loading}>{loading ? 'Enviando...' : 'Enviar pedido'}</Button>
+        </Form>
 
-    const totalPrice = cart.reduce((acc, item) => {
-        return acc + item.price * item.qty;
-      }, 0);
-
-    return(
-        <div>
-            <Header />
-            <Container>
-            <Form onSubmit={handleSubmit(onSubmit)}>
-                <div>
-                    <Label >Nome:</Label>
-                    <Input 
-                        id={"name"}
-                        type="text"
-                        //value={form.name}
-                        {...register("name")}
-                        placeholder="Nome"
-                        required
-                        pattern={"^.{3,}"}
-                        title={"O nome deve ter no mínimo 3 letras"}
-                    />
-                    {errors.name && <ErrorMessage>{errors.name.message}</ErrorMessage>}
-                </div>
-                <div>
-                    <DatePickerLabel> Data de entrega: </DatePickerLabel>
-                    <DatePicker
-                        onChange={dateChange}
-                        // id="deliveryDate"
-                        // name="deliveryDate"
-                        selected={deliveryDate}
-                        // value={date.toISOString()}
-                        // {...register("deliveryDate")}
-                        //onChange={(date) => setFormData({ ...form.date, date })}
-                        // dateFormat="yyyy-MM-dd"
-                        // className="form-control"
-                    />
-                    <input 
-                        {...register("deliveryDate",
-                        {required: true})} 
-                        type="hidden" 
-                        value={deliveryDate.toISOString()} 
-                        id="deliveryDate"
-                    />
-                    {errors.deliveryDate && <ErrorMessage>{errors.deliveryDate.message}</ErrorMessage>}
-                </div>
-                
-                <CartContainer>
-                    <h3> Pordutos selecionados: </h3>
-                    {cart.map((product) =>(
-                    <ProductCart
-                        key={product.id}
-                        product={product}
-                    />
-                ))}
-
-                </CartContainer>
-                <h2>Total: R$ {totalPrice.toFixed(2)}</h2>
-                <Button type="submit" disabled={loading}>{loading ? 'Enviando...' : 'Enviar pedido'}</Button>
-            </Form>
-            
-            </Container>
-        </div>
-    )
+      </Container>
+    </div>
+  )
 }
