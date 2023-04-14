@@ -31,7 +31,7 @@ export function Stock() {
     }
 
   }
-  
+
   useEffect(() => {
     getProducts()
   }, [])
