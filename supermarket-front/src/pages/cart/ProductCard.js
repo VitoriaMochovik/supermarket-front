@@ -15,23 +15,11 @@ export const ProductContainer = styled.div`
   }
 `;
 
-export const Card = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 200px;
-  height: 250px;
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  padding: 20px;
-  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
-`
-
 const ProductTitle = styled.h3`
   font-size: 1.2rem;
   font-weight: bold;
   flex: 5;
-  
+
   & > span {
     color: #999999;
   }
@@ -78,15 +66,6 @@ export const RemoveButton = styled.button`
   }
 `;
 
-const ErrorMessage = styled.p`
-  margin-top: -10px;
-  margin-bottom: 10px;
-  color: red;
-  display: flex;
-  align-items: center;
-`;
-
-
 export function ProductCart({product}) {
   const {cart, setCart} = useContext(StoreContext);
   const [quantity, setQuantity] = useState(product.qty)
@@ -121,26 +100,24 @@ export function ProductCart({product}) {
       const updateCart = cart.filter(prod => prod.id !== product.id)
       setCart(updateCart)
     }
-
-
   };
 
   const handleRemoveItem = (id) => {
     setCart(cart.filter((prod) => prod.id !== id));
   };
 
-
   return (
     <ProductContainer>
-      <ProductTitle> {product.name} <span>({product.qtyStock} {product.qtyStock > 1 ? 'unidades disponíveis' : 'unidade disponível'})</span></ProductTitle>
+      <ProductTitle> {product.name}
+        <span>({product.qtyStock} {product.qtyStock > 1 ? 'unidades disponíveis' : 'unidade disponível'})</span></ProductTitle>
       <ProductPrice> R$ {product.price} </ProductPrice>
       <ProductQuantity>
         <QuantityButton type={'button'} onClick={handleRemoveQuantity}>-</QuantityButton>
         <QuantityDisplay>{quantity}</QuantityDisplay>
-        <QuantityButton type={'button'} disabled={quantity === product.qtyStock} onClick={handleAddQuantity}>+</QuantityButton>
+        <QuantityButton type={'button'} disabled={quantity === product.qtyStock}
+                        onClick={handleAddQuantity}>+</QuantityButton>
       </ProductQuantity>
       <RemoveButton type={'button'} onClick={() => handleRemoveItem(product.id)}> Remover</RemoveButton>
-
     </ProductContainer>
   )
 }

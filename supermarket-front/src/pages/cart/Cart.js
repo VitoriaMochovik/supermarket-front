@@ -188,7 +188,7 @@ export function Cart() {
 
           </CartContainer>
           <h2>Total: R$ {totalPrice.toFixed(2)}</h2>
-          <Button type="submit" disabled={loading}>{loading ? 'Enviando...' : 'Enviar pedido'}</Button>
+          <Button type="submit" disabled={loading || !cart.length}>{loading ? 'Enviando...' : 'Enviar pedido'}</Button>
         </Form>
 
       </Container>
