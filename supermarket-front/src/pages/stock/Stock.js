@@ -15,10 +15,6 @@ export const Container = styled.div`
   flex-wrap: wrap;
 `
 
-const Title = styled.h1`
-  text-align: center;
-`
-
 export function Stock() {
   const [products, setProducts] = useState([])
 
@@ -39,7 +35,6 @@ export function Stock() {
   return (
     <div>
       <Header/>
-      <Title> Estoque </Title>
       <Container>
         {products.map((product) => (
           <ProductStock

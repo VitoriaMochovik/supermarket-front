@@ -7,7 +7,7 @@ export const Card = styled.div`
   flex-direction: column;
   align-items: center;
   width: 200px;
-  height: 350px;
+  height: 300px;
   border: 1px solid #ccc;
   border-radius: 10px;
   padding: 20px;
@@ -16,11 +16,11 @@ export const Card = styled.div`
 `
 
 const ProductTitle = styled.h3`
-  font-size: 1.2rem;
+  font-size: 16px;
   margin-top: 10px;
   text-align: center;
 
-  & > span {
+  & > p {
     color: #999999;
   }
   flex: 2;
@@ -60,6 +60,7 @@ const QuantityButton = styled.button`
     background-color: #fff;
     color: #333;
   }
+  
 `;
 
 const QuantityDisplay = styled.p`
@@ -86,9 +87,9 @@ const AddButton = styled.button`
     color: #fff;
     cursor: not-allowed;
   }
-
-  flex: 1;
-  max-height: 50px;
+  
+  height: 40px;
+  max-height: 40px;
 `;
 
 export function ProductCard({product}) {
@@ -145,7 +146,7 @@ export function ProductCard({product}) {
 
   return (
     <Card>
-      <ProductTitle> {product.name} <span>({product.qtyStock} {product.qtyStock > 1 ? 'unidades disponíveis' : 'unidade disponível'})</span></ProductTitle>
+      <ProductTitle> {product.name} <p>({product.qtyStock} {product.qtyStock > 1 ? 'unidades disponíveis' : 'unidade disponível'})</p></ProductTitle>
       <ProductPrice> R$ {product.price} </ProductPrice>
       <ProductQuantity>
         <QuantityButton disabled={quantity === 0} onClick={handleRemoveQuantity}>-</QuantityButton>
