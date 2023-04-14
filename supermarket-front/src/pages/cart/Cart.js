@@ -12,7 +12,6 @@ const CartContainer = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  max-width: 400px;
   border: 1px solid #ccc;
   padding: 1rem;
 `
@@ -150,7 +149,7 @@ export function Cart() {
           </div>
 
           <CartContainer>
-            <h3> Pordutos selecionados: </h3>
+            <h3> Produtos selecionados: </h3>
             {cart.map((product) => (
               <ProductCart
                 key={product.id}

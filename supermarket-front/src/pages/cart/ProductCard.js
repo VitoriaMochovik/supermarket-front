@@ -30,16 +30,26 @@ export const Card = styled.div`
 const ProductTitle = styled.h3`
   font-size: 1.2rem;
   font-weight: bold;
+  flex: 5;
+  
+  & > span {
+    color: aqua;
+  }
 `;
 
 const ProductPrice = styled.p`
   font-size: 1.2rem;
   font-weight: bold;
+  flex: 2;
+  display: flex;
+  justify-content: center;
 `;
 
 const ProductQuantity = styled.div`
   display: flex;
   align-items: center;
+  justify-content: center;
+  flex: 2;
 `;
 
 const QuantityButton = styled.button`
@@ -63,6 +73,7 @@ export const RemoveButton = styled.button`
   background-color: transparent;
   color: red;
   cursor: pointer;
+  flex: 1;
 
   &:hover {
     text-decoration: underline;
@@ -123,14 +134,12 @@ export function ProductCart({product}) {
 
   return (
     <ProductContainer>
-      <ProductTitle> {product.name}</ProductTitle>
+      <ProductTitle> {product.name} <span>({product.qtyStock} {product.qtyStock > 1 ? 'unidades disponíveis' : 'unidade disponível'})</span></ProductTitle>
       <ProductPrice> R$ {product.price} </ProductPrice>
       <ProductQuantity>
         <QuantityButton type={'button'} onClick={handleRemoveQuantity}>-</QuantityButton>
         <QuantityDisplay>{quantity}</QuantityDisplay>
-        {quantity < product.qtyStock ?
-          (<QuantityButton type={'button'} onClick={handleAddQuantity}>+</QuantityButton>) :
-          <div><ErrorMessage> A quantidade máxima disponivel em estoque foi atingida</ErrorMessage></div>}
+        <QuantityButton type={'button'} disabled={quantity === product.qtyStock} onClick={handleAddQuantity}>+</QuantityButton>
       </ProductQuantity>
       <RemoveButton type={'button'} onClick={() => handleRemoveItem(product.id)}> Remover</RemoveButton>
 

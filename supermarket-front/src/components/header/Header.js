@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 
 // 2da77a
 const Container = styled.div`
-    background-color: #BDB76B;
+    background-color: #9cb29c;
     box-sizin: border-box;
     height: 100px;
     display: flex;
@@ -15,13 +15,13 @@ const Container = styled.div`
     justify-content: space-between;
     align-items: center;
     text-align: center;
-        @media (max-width:375px){
-            display: flex;
-            flex-direction: column;
-            height: 160px;
-            justify-content: space-around;
-            padding: 10px;
-        }
+    @media (max-width: 375px) {
+        display: flex;
+        flex-direction: column;
+        height: 160px;
+        justify-content: space-around;
+        padding: 10px;
+    }
 `
 export const LogoContainer = styled.div`
     width: 250px;
@@ -40,6 +40,7 @@ export const IMGLogo = styled.img`
 export const ButtonContainer = styled.div`
     width: 350px;
     justify-content: center;
+    margin-right: 20px;
 `
 
 
@@ -65,20 +66,15 @@ export function Header() {
                 <LogoContainer >
                     <IMGLogo
                         src={logo}
-                    >
-                        
-                    </IMGLogo>
+                    />
                 </LogoContainer>
                 <ButtonContainer>
                     <ButtonGroup>
-                        <Button onClick={handleGoToStock}> Estoque </Button>
-                        
-                        <Button onClick={handleGoToProducts}> Produtos </Button>
-                        <Button onClick={handleGoToCart}> Carrinho </Button>
+                        <Button onClick={handleGoToStock} variant={'contained'} style={{backgroundColor: '#49945e'}}> Estoque </Button>
+                        <Button onClick={handleGoToProducts} variant={'contained'} style={{backgroundColor: '#49945e'}}> Produtos </Button>
+                        <Button onClick={handleGoToCart} variant={'contained'} style={{backgroundColor: '#49945e'}}> Carrinho </Button>
                     </ButtonGroup>
                 </ButtonContainer>
-                
-                
             </Container>
         </div>
     )
