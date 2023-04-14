@@ -77,6 +77,7 @@ export function Cart() {
     const [deliveryDate, setdeliveryDate] = useState(new Date() )
     const { cart, setCart } = useContext(StoreContext);
     const { register, handleSubmit, reset, formState: { errors } } = useForm()
+    const [loading, setLoading ] = useState(false)
 
 
 
@@ -93,6 +94,7 @@ export function Cart() {
 
 
     const onSubmit = async (data) => {
+      setLoading(true)
         console.log(data)
 
         const arrayProducts = cart.map((product) => {
@@ -116,6 +118,9 @@ export function Cart() {
 
         try {
           await createOrder(newOrder)
+         
+          setCart([])
+          reset()
 
           console.log("new order", newOrder)
           alert("Pedido enviado!!!")
@@ -123,7 +128,7 @@ export function Cart() {
           console.log(error)
         }
         
-        
+        setLoading(false)
     }   
 
     const totalPrice = cart.reduce((acc, item) => {
@@ -183,7 +188,7 @@ export function Cart() {
 
                 </CartContainer>
                 <h2>Total: R$ {totalPrice.toFixed(2)}</h2>
-                <Button type="submit">Enviar pedido</Button>
+                <Button type="submit" disabled={loading}>{loading ? 'Enviando...' : 'Enviar pedido'}</Button>
             </Form>
             
             </Container>
